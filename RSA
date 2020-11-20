@@ -1,0 +1,79 @@
+import java.util.Scanner;
+public class Rsa
+{
+public static int mult(int x,int y,int n)
+{
+int k=1;
+int j;
+for(j=1;j<=y;j++)
+k=(k*x)%n;
+return k;
+}
+public static int gcd(int m,int n)
+{
+if(n==0)
+return m;
+else
+return (gcd(n,m%n));
+}
+public static int isprime(int num)
+ {
+ int temp;
+ boolean isprime=true;
+ for(int k=2;k<=num/2;k++)
+ {
+ temp=num%k;
+ if(temp==0)
+ {
+ isprime=false;
+ break;
+ }
+ }
+ if(isprime==false)
+{
+ System.out.println(num + "not a prime number");
+return 0;
+}
+else
+{
+System.out.println(num + "is a prime number");
+return num;
+}
+}
+public static void main(String[] args)
+{
+int msg,plaintext,ciphertext;
+int n,d=0,e,z,p,q,i;
+Scanner scanner = new Scanner(System.in);
+System.out.println("enter two values p and q: ");
+ p = scanner.nextInt();
+ q = scanner.nextInt();
+
+ int a=isprime(p);
+int b=isprime(q);
+ if((a==p && b==q) && (a!=0 && b!=0) )
+{
+System.out.println("enter message ");
+msg=scanner.nextInt();
+n=p*q;
+z=(p-1)*(q-1);
+do
+{
+System.out.print("choose the value of e (e<2) such that gcd(z,e)=1: ");
+e=scanner.nextInt();
+} while (gcd(z,e)!=1);
+i=2;
+while (((i*e)%z)!=1)
+{
+i++;
+d=i;
+}
+System.out.println("The public key pair is (" + e + "," + n + ")");
+System.out.println("The private key pair is (" + d + "," + n + ")");
+ciphertext = mult(msg,e,n);
+System.out.println("cipher text = " + ciphertext);
+plaintext = mult(ciphertext,d,n);
+System.out.println("plain text = " + plaintext);
+}
+}
+}
